@@ -23,19 +23,19 @@ void setup_button() {
 }
 
 void button_1_handler() {
-    click_sum_1 ++;
-    Serial.print("button_1 is clicked. x");
-    Serial.println(click_sum_1);
+  click_sum_1 ++;
+  Serial.print("button_1 is clicked. x");
+  Serial.println(click_sum_1);
 }
 
 void button_2_handler() {
-    click_sum_2 ++;
-    led_switch();
-    Serial.print("button_2 is clicked. x");
-    Serial.println(click_sum_2);
+  click_sum_2 ++;
+  led_switch();
+  Serial.print("button_2 is clicked. x");
+  Serial.println(click_sum_2);
 }
 
-void button_loop() {
+void loop_button() {
   // 按钮消抖
   if (!digitalRead(button_1)) {
     click_status_2 = 0;

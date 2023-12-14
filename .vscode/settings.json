@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "random": "cpp"
     },
     "cmake.configureOnOpen": false
 }

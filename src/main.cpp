@@ -8,8 +8,8 @@ int green_yellow[] = {120, 240, 0};
 int pink_purple[] = {240, 0, 120};
 int blue_green[] = {0, 240, 120};
 
-float speed = 0.6;
-float brightness = 0.3;
+float speed = 0.2;
+float brightness = 0.4;
 
 void setup() { 
     setup_led();
@@ -17,8 +17,9 @@ void setup() {
 }
 
 void loop() { 
-  led_breath(blue_green, speed, brightness);
 
-  button_loop();
+  loop_led_gradient(green_yellow, blue_green, speed, brightness);
+  loop_button();
+
   delay(DELAY_TIME);
 }
