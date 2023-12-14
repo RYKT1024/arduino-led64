@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ArduinoJson.h>
+#include <config.h>
 #include <cstring>
 
 WiFiUDP Udp;  //声明UDP对象
@@ -29,19 +30,39 @@ void setup_udp() {
 }
 
 void handler_breath(StaticJsonDocument<2048> doc) {
-  const char *mode = "breath";
-  float brightness = doc["config"]["brightness"];
-  float speed = doc["config"]["speed"];
-  int color[3] = {doc["config"]["color"][0], doc["config"]["color"][1], doc["config"]["color"][2]};
-  
+  BreathConfig config;
+  config.mode = "breath";
+  config.brightness = doc["config"]["brightness"];
+  config.speed = doc["config"]["speed"];
+  config.color[0] = doc["config"]["color"][0];
+  config.color[1] = doc["config"]["color"][1];
+  config.color[2] = doc["config"]["color"][2];
+  // config.show_detail();
+
+
+  // BreathConfig config;
+  // config.mode = "breath";
+  // config.brightness = doc["config"]["brightness"];
+  // config.speed = doc["config"]["speed"];
+  // config.color[0] = doc["config"]["color"][0];
+  // config.color[1] = doc["config"]["color"][1];
+  // config.color[2] = doc["config"]["color"][2];
+  // Config * conf = &config;
+  // conf->get_mode();
 }
 
 void handler_gradient(StaticJsonDocument<2048> doc) {
-  const char *mode = "gradient";
-  float brightness = doc["config"]["brightness"];
-  float speed = doc["config"]["speed"];
-  int color_from[3] = {doc["config"]["color_from"][0], doc["config"]["color_from"][1], doc["config"]["color_from"][2]};
-  int color_to[3] = {doc["config"]["color_to"][0], doc["config"]["color_to"][1], doc["config"]["color_to"][2]};
+  GradientConfig config;
+  config.mode = "gradient";
+  config.brightness = doc["config"]["brightness"];
+  config.speed = doc["config"]["speed"];
+  config.color_from[0] = doc["config"]["color_from"][0];
+  config.color_from[1] = doc["config"]["color_from"][1];
+  config.color_from[2] = doc["config"]["color_from"][2];
+  config.color_to[0] = doc["config"]["color_to"][0];
+  config.color_to[1] = doc["config"]["color_to"][1];
+  config.color_to[2] = doc["config"]["color_to"][2];
+  // config.show_detail();
 }
 
 void loop_udp() {

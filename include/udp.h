@@ -5,6 +5,7 @@
 #include <WiFi.h>  
 #include <ArduinoJson.h>
 #include <cstring>
+#include <config.h>
 
 void setup_udp();
 void loop_udp();
