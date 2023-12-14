@@ -9,7 +9,7 @@ int pink_purple[] = {240, 0, 120};
 int blue_green[] = {0, 240, 120};
 
 float speed = 0.2;
-float brightness = 0.4;
+float brightness = 0.2;
 
 void setup() { 
     setup_led();

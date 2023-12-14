@@ -12,7 +12,7 @@ CRGB color_breath(CRGB color, int step, int j);
 CRGB color_gradient(CRGB color_from, CRGB color_to, int step, int j);
 
 void led_switch();
-void led_commit();
+int led_commit();
 void show_color(CRGB color);
 
 void setup_led();

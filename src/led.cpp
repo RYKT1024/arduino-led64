@@ -84,10 +84,15 @@ void loop_led_breath(int color_arr[], float speed, float brightness) {
 
   // show_color(color);
   fill_solid(leds, NUM_LEDS, color);
-  led_commit();
-  j++;
+  j += led_commit();
 }
 
+/**
+ * color_1_arr：起始颜色数组，顺序为RGB
+ * color_2_arr：目标颜色数组
+ * speed      ：每秒变化的百分比
+ * brightness ：0到1之间的值
+*/
 void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float brightness) {
   CRGB color_1_origin = rgb(color_1_arr[0], color_1_arr[1], color_1_arr[2]);
   CRGB color_2_origin = rgb(color_2_arr[0], color_2_arr[1], color_2_arr[2]);
@@ -98,13 +103,21 @@ void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float 
 
   // show_color(color);
   fill_solid(leds, NUM_LEDS, color);
-  led_commit();
-  j++;
+  j += led_commit();
 }
 
-void led_commit() {
+/**
+ * 提交颜色更改，显示颜色
+ * 检查led_status状态为flase时不显示
+ * 返回值控制j是否自增
+*/
+int led_commit() {
   if (!led_status) {
     fill_solid(leds, NUM_LEDS, rgb(0, 0, 0));
+    FastLED.show();
+    return 0;
+  } else {
+    FastLED.show();
+    return 1;
   }
-  FastLED.show();
 }
