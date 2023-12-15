@@ -70,12 +70,16 @@ void get_handler_onboard() {
 
   Udp.beginPacket(remoteIP, 6688);  //准备发送数据到目标IP和目标端口
   Udp.print('{');
+  Udp.print("\"type\":\"config\", ");
+  Udp.print("\"data\":");
+  Udp.print('{');
   for(int i=0; i<5; i++) {
     Udp.printf("\"%d\":", i);
     Udp.print(config[i]->get_json());
     if(i<4)
       Udp.print(", ");
   } 
+  Udp.print('}');
   Udp.println('}');
   Udp.endPacket();                                   //向目标IP目标端口发送数据
   
