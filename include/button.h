@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <led.h>
+#include <mode.h>
 
 void setup_button();
 void loop_button();
