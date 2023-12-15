@@ -22,6 +22,13 @@ const char *BreathConfig::get_mode() const {
     return mode;
 }
 
+const char *BreathConfig::get_json() const {
+    std::string result = "{\"mode\":\"" + std::string(mode) + "\", ";
+    result += "\"brightness\":" + std::to_string(brightness) + ", ";
+    result += "\"speed\":" + std::to_string(speed) + ", ";
+    result += "\"color\":[" + std::to_string(color[0]) + ", " + std::to_string(color[1]) + ", " + std::to_string(color[2]) + "]}";
+    return result.c_str();
+}
 
 
 void GradientConfig::show_mode() {
@@ -52,3 +59,11 @@ const char *GradientConfig::get_mode() const {
   return mode;
 }
 
+const char *GradientConfig::get_json() const {
+    std::string result = "{\"mode\":\"" + std::string(mode) + "\", ";
+    result += "\"brightness\":" + std::to_string(brightness) + ", ";
+    result += "\"speed\":" + std::to_string(speed) + ", ";
+    result += "\"color_from\":[" + std::to_string(color_from[0]) + ", " + std::to_string(color_from[1]) + ", " + std::to_string(color_from[2]) + "], ";
+    result += "\"color_to\":[" + std::to_string(color_to[0]) + ", " + std::to_string(color_to[1]) + ", " + std::to_string(color_to[2]) + "]}";
+    return result.c_str();
+}

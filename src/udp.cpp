@@ -12,6 +12,8 @@ char incomingPacket[2048];  //存储Udp客户端发过来的数据
 const char *ssid = "507-Wifi";
 const char *password = "123000666";
 
+IPAddress remoteIP; //存储服务器IP
+
 void setup_udp() {
   Serial.begin(115200);                 //开启串口，波特率为115200
 
@@ -63,6 +65,22 @@ void handler_gradient(StaticJsonDocument<2048> doc) {
   set_mode(onboard, &config);
 }
 
+void get_handler_onboard() {
+  Config **config = get_onboard();
+
+  Udp.beginPacket(remoteIP, 6688);  //准备发送数据到目标IP和目标端口
+  Udp.print('{');
+  for(int i=0; i<5; i++) {
+    Udp.printf("\"%d\":", i);
+    Udp.print(config[i]->get_json());
+    if(i<4)
+      Udp.print(", ");
+  } 
+  Udp.println('}');
+  Udp.endPacket();                                   //向目标IP目标端口发送数据
+  
+}
+
 void loop_udp() {
   /*接收发送过来的Udp数据*/
   int Data_length = Udp.parsePacket();  //获取接收的数据的长度
@@ -71,6 +89,7 @@ void loop_udp() {
     int len = Udp.read(incomingPacket, 2048);  //读取数据，将数据保存在数组incomingPacket中
     if (len > 0)                              //为了避免获取的数据后面乱码做的判断
     {
+      remoteIP = Udp.remoteIP();
       incomingPacket[len] = 0;
 
       // 删除最前面和最后面的引号
@@ -87,7 +106,10 @@ void loop_udp() {
       } else {
         // 从JSON文档中提取数据
         const char *mode = doc["mode"];
-        if(!strcmp(mode, "breath")){
+        if(!strcmp(mode, "get_onboard")) {
+          get_handler_onboard();
+        }
+        else if(!strcmp(mode, "breath")) {
           handler_breath(doc);
         } 
         else if(!strcmp(mode, "gradient")) {

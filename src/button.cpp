@@ -43,7 +43,7 @@ void button_1_handler() {
       button_1_lasttime = current;
 
       int selected = mode_switch(-1);
-      Serial.print("Mode: ");
+      Serial.print("Onboard Mode: ");
       Serial.println(selected);
     }
   }

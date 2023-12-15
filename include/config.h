@@ -10,6 +10,7 @@ public:
   virtual void show_mode() = 0; 
   virtual void show_detail() = 0; 
   virtual const char *get_mode() const = 0;
+  virtual const char *get_json() const = 0;
 };
 
 // 派生类 BreathConfig
@@ -23,6 +24,7 @@ public:
   void show_mode() override;
   void show_detail() override;
   const char *get_mode() const override;
+  const char *get_json() const override;
 };
 
 // 派生类 GradientConfig
@@ -37,6 +39,7 @@ public:
   void show_mode() override;
   void show_detail() override;
   const char *get_mode() const override;
+  const char *get_json() const override;
 };
 
 #endif  

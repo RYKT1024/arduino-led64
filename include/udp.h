@@ -11,6 +11,8 @@
 void setup_udp();
 void loop_udp();
 
+void get_handler_onboard();
+
 void handler_breath(StaticJsonDocument<2048> doc);
 void handler_gradient(StaticJsonDocument<2048> doc);
 

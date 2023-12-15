@@ -92,6 +92,10 @@ int mode_switch(int select) {
     return selected;
 }
 
+Config **get_onboard() {
+    return onboardConfig;
+}
+
 void loop_mode() {
     Config *config = onboardConfig[selected];
     const char *mode = config->get_mode();
@@ -100,10 +104,12 @@ void loop_mode() {
         BreathConfig *configPtr = static_cast<BreathConfig *>(config);
         loop_led_breath(configPtr->color, configPtr->speed, configPtr->brightness);
         // configPtr->show_detail();
+        // Serial.println(configPtr->get_json());
     }
     else if(!strcmp(mode, "gradient")) {
         GradientConfig *configPtr = static_cast<GradientConfig *>(config);
         loop_led_gradient(configPtr->color_from, configPtr->color_to, configPtr->speed, configPtr->brightness);
         // configPtr->show_detail();
+        // Serial.println(configPtr->get_json());
     }
 }
