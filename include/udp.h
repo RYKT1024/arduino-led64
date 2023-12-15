@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include <cstring>
 #include <config.h>
+#include <mode.h>
 
 void setup_udp();
 void loop_udp();

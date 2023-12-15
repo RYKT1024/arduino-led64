@@ -78,7 +78,7 @@ CRGB color_gradient(CRGB color_from, CRGB color_to, int step, int j) {
 void loop_led_breath(int color_arr[], float speed, float brightness) {
   CRGB color_origin = rgb(color_arr[0], color_arr[1], color_arr[2]);
   static int j = 0;
-  static int step = static_cast<int>(100 / speed);
+  int step = static_cast<int>(100 / speed);
   CRGB color = color_breath(color_origin, step, j);
   color = update_brightness(color, brightness);
 
@@ -97,7 +97,7 @@ void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float 
   CRGB color_1_origin = rgb(color_1_arr[0], color_1_arr[1], color_1_arr[2]);
   CRGB color_2_origin = rgb(color_2_arr[0], color_2_arr[1], color_2_arr[2]);
   static int j = 0;
-  static int step = static_cast<int>(100 / speed);
+  int step = static_cast<int>(100 / speed);
   CRGB color = color_gradient(color_1_origin, color_2_origin, step, j);
   color = update_brightness(color, brightness);
 

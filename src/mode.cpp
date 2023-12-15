@@ -32,7 +32,7 @@ void setup_mode() {
     onboardConfig[1] = &breathConfig_1;
 
     breathConfig_2.mode = "breath";
-    breathConfig_2.brightness = 0.4;
+    breathConfig_2.brightness = 0.2;
     breathConfig_2.speed = 0.2;
     breathConfig_2.color[0] = 0;
     breathConfig_2.color[1] = 240;
@@ -63,6 +63,27 @@ void setup_mode() {
 
 }
 
+void set_mode(int onboard, Config *config) {
+    const char *mode = config->get_mode();
+
+    if(!strcmp(mode, "breath")) {
+        BreathConfig *configPtr = static_cast<BreathConfig *>(config);
+        BreathConfig *breathConfig = new BreathConfig();
+        *breathConfig = *configPtr;
+
+        onboardConfig[onboard] = breathConfig;
+    }
+    else if(!strcmp(mode, "gradient")) {
+        GradientConfig *configPtr = static_cast<GradientConfig *>(config);
+        GradientConfig *gradientConfig = new GradientConfig;
+        *gradientConfig = *configPtr;
+
+        onboardConfig[onboard] = gradientConfig;
+    }
+
+    selected = onboard;
+}
+
 void loop_mode() {
     Config *config = onboardConfig[selected];
     const char *mode = config->get_mode();
@@ -70,9 +91,11 @@ void loop_mode() {
     if(!strcmp(mode, "breath")) {
         BreathConfig *configPtr = static_cast<BreathConfig *>(config);
         loop_led_breath(configPtr->color, configPtr->speed, configPtr->brightness);
+        // configPtr->show_detail();
     }
     else if(!strcmp(mode, "gradient")) {
         GradientConfig *configPtr = static_cast<GradientConfig *>(config);
         loop_led_gradient(configPtr->color_from, configPtr->color_to, configPtr->speed, configPtr->brightness);
+        // configPtr->show_detail();
     }
 }

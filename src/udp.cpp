@@ -4,6 +4,7 @@
 #include <ArduinoJson.h>
 #include <config.h>
 #include <cstring>
+#include <mode.h>
 
 WiFiUDP Udp;  //声明UDP对象
 
@@ -29,31 +30,25 @@ void setup_udp() {
   Udp.begin(1122);                //启动UDP监听这个端口
 }
 
+// json: {"mode":"breath", "config":{"onboard":0, "brightness":0.4, "speed":0.8, "color":[255, 0, 120]}}
 void handler_breath(StaticJsonDocument<2048> doc) {
   BreathConfig config;
-  config.mode = "breath";
+  config.mode = doc["mode"];
   config.brightness = doc["config"]["brightness"];
   config.speed = doc["config"]["speed"];
   config.color[0] = doc["config"]["color"][0];
   config.color[1] = doc["config"]["color"][1];
   config.color[2] = doc["config"]["color"][2];
-  // config.show_detail();
+  // config.show_mode();
 
-
-  // BreathConfig config;
-  // config.mode = "breath";
-  // config.brightness = doc["config"]["brightness"];
-  // config.speed = doc["config"]["speed"];
-  // config.color[0] = doc["config"]["color"][0];
-  // config.color[1] = doc["config"]["color"][1];
-  // config.color[2] = doc["config"]["color"][2];
-  // Config * conf = &config;
-  // conf->get_mode();
+  int onboard = doc["config"]["onboard"];
+  set_mode(onboard, &config);
 }
 
+// json: {"mode":"gradient", "config":{"onboard":0, "brightness":0.4, "speed":0.8, "color_from":[255, 0, 120], "color_to":[0, 255, 0]}}
 void handler_gradient(StaticJsonDocument<2048> doc) {
   GradientConfig config;
-  config.mode = "gradient";
+  config.mode = doc["mode"];
   config.brightness = doc["config"]["brightness"];
   config.speed = doc["config"]["speed"];
   config.color_from[0] = doc["config"]["color_from"][0];
@@ -63,6 +58,9 @@ void handler_gradient(StaticJsonDocument<2048> doc) {
   config.color_to[1] = doc["config"]["color_to"][1];
   config.color_to[2] = doc["config"]["color_to"][2];
   // config.show_detail();
+
+  int onboard = doc["config"]["onboard"];
+  set_mode(onboard, &config);
 }
 
 void loop_udp() {

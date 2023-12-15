@@ -1,7 +1,7 @@
 #include "config.h"
 
 void BreathConfig::show_mode() {
-    Serial.println("Breath");
+    Serial.println(mode);
 }
 
 void BreathConfig::show_detail() {
