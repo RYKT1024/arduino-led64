@@ -6,7 +6,7 @@
 Config *onboardConfig[5];
 BreathConfig breathConfig;
 BreathConfig breathConfig_1;
-BreathConfig breathConfig_2;
+StaticConfig staticConfig;
 GradientConfig gradientConfig;
 GradientConfig gradientConfig_1;
 
@@ -31,13 +31,24 @@ void setup_mode() {
     breathConfig_1.color[2] = 120;
     onboardConfig[1] = &breathConfig_1;
 
-    breathConfig_2.mode = "breath";
-    breathConfig_2.brightness = 0.2;
-    breathConfig_2.speed = 0.2;
-    breathConfig_2.color[0] = 0;
-    breathConfig_2.color[1] = 240;
-    breathConfig_2.color[2] = 120;
-    onboardConfig[2] = &breathConfig_2;
+    int colors[64][3] = {
+        {255,0,0}, {255,0,0}, {255,0,0}, {255,0,0}, {255,0,0}, {255,0,0}, {255,0,0}, {255,0,0}, 
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255},
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255},
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255},
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255},
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255},
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {255,0,0},
+        {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {255,0,0}, {255,0,0}
+    };
+    staticConfig.mode = "static";
+    staticConfig.brightness = 0.2;
+    for (int i=0; i<64; i++) {
+        staticConfig.colors[i][0] = colors[i][0];
+        staticConfig.colors[i][1] = colors[i][1];
+        staticConfig.colors[i][2] = colors[i][2];
+    }
+    onboardConfig[2] = &staticConfig;
 
     gradientConfig.mode = "gradient";
     gradientConfig.brightness = 0.6;
@@ -80,6 +91,13 @@ void set_mode(int onboard, Config *config) {
 
         onboardConfig[onboard] = gradientConfig;
     }
+    else if(!strcmp(mode, "static")) {
+        StaticConfig *configPtr = static_cast<StaticConfig *>(config);
+        StaticConfig *staticConfig = new StaticConfig;
+        *staticConfig = *configPtr;
+
+        onboardConfig[onboard] = staticConfig;
+    }
 
     selected = onboard;
 }
@@ -102,13 +120,22 @@ void loop_mode() {
 
     if(!strcmp(mode, "breath")) {
         BreathConfig *configPtr = static_cast<BreathConfig *>(config);
+        led_static_switch(false);
         loop_led_breath(configPtr->color, configPtr->speed, configPtr->brightness);
         // configPtr->show_detail();
         // Serial.println(configPtr->get_json());
     }
     else if(!strcmp(mode, "gradient")) {
         GradientConfig *configPtr = static_cast<GradientConfig *>(config);
+        led_static_switch(false);
         loop_led_gradient(configPtr->color_from, configPtr->color_to, configPtr->speed, configPtr->brightness);
+        // configPtr->show_detail();
+        // Serial.println(configPtr->get_json());
+    }
+    else if(!strcmp(mode, "static")) {
+        StaticConfig *configPtr = static_cast<StaticConfig *>(config);
+        loop_led_static(configPtr->colors, configPtr->brightness);
+        led_static_switch(true);
         // configPtr->show_detail();
         // Serial.println(configPtr->get_json());
     }

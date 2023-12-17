@@ -12,11 +12,13 @@ CRGB color_breath(CRGB color, int step, int j);
 CRGB color_gradient(CRGB color_from, CRGB color_to, int step, int j);
 
 void led_switch();
-int led_commit();
+void led_static_switch(bool static_status);
+bool led_check();
 void show_color(CRGB color);
 
 void setup_led();
 void loop_led_breath(int color_arr[], float speed, float brightness);
 void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float brightness);
+void loop_led_static(int colors[64][3], float brightness);
 
 #endif

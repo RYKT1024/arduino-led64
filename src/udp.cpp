@@ -65,6 +65,24 @@ void handler_gradient(StaticJsonDocument<2048> doc) {
   set_mode(onboard, &config);
 }
 
+// json: {"mode":"static", "config":{"onboard":0, "brightness":0.4, "colors":[[255, 0, 120], ...]}}
+void handler_static(StaticJsonDocument<2048> doc) {
+  StaticConfig config;
+  config.mode = doc["mode"];
+  const char *mode = doc["mode"];
+  Serial.println(mode);
+  config.brightness = doc["config"]["brightness"];
+  for (int i=0; i<64; i++) {
+    config.colors[i][0] = doc["config"]["colors"][i][0];
+    config.colors[i][1] = doc["config"]["colors"][i][1];
+    config.colors[i][2] = doc["config"]["colors"][i][2];
+  }
+  // config.show_detail();
+
+  int onboard = doc["config"]["onboard"];
+  set_mode(onboard, &config);
+}
+
 void get_handler_onboard() {
   Config **config = get_onboard();
 
@@ -99,6 +117,8 @@ void loop_udp() {
       // 删除最前面和最后面的引号
       String cleanedData = incomingPacket;
       cleanedData.trim();
+      Serial.println(cleanedData);
+
 
       // 解析JSON数据
       StaticJsonDocument<2048> doc; // 适当调整文档大小
@@ -119,7 +139,13 @@ void loop_udp() {
         else if(!strcmp(mode, "gradient")) {
           handler_gradient(doc);
         }
+        else if(!strcmp(mode, "static")) {
+          Serial.println("ok");
+          handler_static(doc);
+        }
       }
+      Serial.print("Free heap after parsing JSON: ");
+      Serial.println(ESP.getFreeHeap());
     }
   }
 }

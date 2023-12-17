@@ -8,6 +8,10 @@
 
 CRGB leds[NUM_LEDS];
 bool led_status = true;
+bool led_static = false;
+
+// 解决static状态下的状态保持问题
+bool static_flag = false;
 
 void setup_led() {
   FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);  
@@ -24,6 +28,12 @@ void show_color(CRGB color) {
 
 void led_switch() {
   led_status = !led_status;
+  if(!led_status && led_static) 
+    static_flag = true;
+}
+
+void led_static_switch(bool static_status) {
+  led_static = static_status;
 }
 
 CRGB rgb(int g, int r, int b) {
@@ -76,6 +86,8 @@ CRGB color_gradient(CRGB color_from, CRGB color_to, int step, int j) {
  * brightness ：0到1之间的值
 */
 void loop_led_breath(int color_arr[], float speed, float brightness) {
+  if(!led_check())
+    return;
   CRGB color_origin = rgb(color_arr[0], color_arr[1], color_arr[2]);
   static int j = 0;
   int step = static_cast<int>(100 / speed);
@@ -84,7 +96,8 @@ void loop_led_breath(int color_arr[], float speed, float brightness) {
 
   // show_color(color);
   fill_solid(leds, NUM_LEDS, color);
-  j += led_commit();
+  FastLED.show();
+  j++;
 }
 
 /**
@@ -94,6 +107,8 @@ void loop_led_breath(int color_arr[], float speed, float brightness) {
  * brightness ：0到1之间的值
 */
 void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float brightness) {
+  if(!led_check())
+    return;
   CRGB color_1_origin = rgb(color_1_arr[0], color_1_arr[1], color_1_arr[2]);
   CRGB color_2_origin = rgb(color_2_arr[0], color_2_arr[1], color_2_arr[2]);
   static int j = 0;
@@ -103,21 +118,41 @@ void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float 
 
   // show_color(color);
   fill_solid(leds, NUM_LEDS, color);
-  j += led_commit();
+  FastLED.show();
+  j++;
+}
+
+//  colors  ：长度为64的RGB颜色二维数组
+void loop_led_static(int colors[64][3], float brightness) {
+  if(!led_check())
+    return;
+  for(int i=0; i < 64; i++){
+    int r = colors[i][0];
+    int g = colors[i][1];
+    int b = colors[i][2];
+
+    CRGB color = rgb(r, g, b);
+    leds[i] = update_brightness(color, brightness);
+  }
+  FastLED.show();
 }
 
 /**
  * 提交颜色更改，显示颜色
  * 检查led_status状态为flase时不显示
- * 返回值控制j是否自增
 */
-int led_commit() {
+bool led_check() {
   if (!led_status) {
     fill_solid(leds, NUM_LEDS, rgb(0, 0, 0));
     FastLED.show();
-    return 0;
-  } else {
-    FastLED.show();
-    return 1;
+    return false;
   }
+  if (led_static){
+    if (static_flag) {
+      static_flag = false;
+      return true;
+    } 
+    return false;
+  }
+  return true;
 }

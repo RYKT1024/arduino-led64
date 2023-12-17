@@ -42,4 +42,17 @@ public:
   const char *get_json() const override;
 };
 
+// 派生类 StaticConfig
+class StaticConfig : public Config {
+public:
+  const char *mode;
+  float brightness;
+  int colors[64][3];
+
+  void show_mode() override;
+  void show_detail() override;
+  const char *get_mode() const override;
+  const char *get_json() const override;
+};
+
 #endif  
