@@ -5,6 +5,7 @@
 #include <config.h>
 #include <cstring>
 #include <mode.h>
+#include <led.h>
 
 WiFiUDP Udp;  //声明UDP对象
 
@@ -44,7 +45,7 @@ void handler_breath(StaticJsonDocument<2048> doc) {
   // config.show_mode();
 
   int onboard = doc["config"]["onboard"];
-  set_mode(onboard, &config);
+  set_mode(onboard, "breath", &config);
 }
 
 // json: {"mode":"gradient", "config":{"onboard":0, "brightness":0.4, "speed":0.8, "color_from":[255, 0, 120], "color_to":[0, 255, 0]}}
@@ -62,7 +63,7 @@ void handler_gradient(StaticJsonDocument<2048> doc) {
   // config.show_detail();
 
   int onboard = doc["config"]["onboard"];
-  set_mode(onboard, &config);
+  set_mode(onboard, "gradient", &config);
 }
 
 void get_handler_onboard() {
@@ -110,15 +111,19 @@ void loop_udp() {
       } else {
         // 从JSON文档中提取数据
         const char *mode = doc["mode"];
-        if(!strcmp(mode, "get_onboard")) {
+        if(!strcmp(mode, "get_onboard")) 
           get_handler_onboard();
-        }
-        else if(!strcmp(mode, "breath")) {
+        else if(!strcmp(mode, "breath")) 
           handler_breath(doc);
-        } 
-        else if(!strcmp(mode, "gradient")) {
+        else if(!strcmp(mode, "gradient")) 
           handler_gradient(doc);
+        else if(!strcmp(mode, "switch")) 
+          led_switch();
+        else if(!strcmp(mode, "set")) {
+          Config *config;
+          set_mode(doc["config"]["onboard"], "set", config);
         }
+          
       }
     }
   }

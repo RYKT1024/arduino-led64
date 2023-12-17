@@ -9,7 +9,7 @@ void setup_mode();
 void loop_mode();
 
 Config **get_onboard();
-void set_mode(int onboard, Config *config);
+void set_mode(int onboard, const char *mode, Config *config);
 int mode_switch(int select);
 
 #endif

@@ -6,7 +6,6 @@
 // 基类
 class Config {
 public:
-
   virtual void show_mode() = 0; 
   virtual void show_detail() = 0; 
   virtual const char *get_mode() const = 0;

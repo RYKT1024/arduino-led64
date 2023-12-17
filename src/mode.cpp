@@ -63,8 +63,7 @@ void setup_mode() {
 
 }
 
-void set_mode(int onboard, Config *config) {
-    const char *mode = config->get_mode();
+void set_mode(int onboard, const char *mode, Config *config) {
 
     if(!strcmp(mode, "breath")) {
         BreathConfig *configPtr = static_cast<BreathConfig *>(config);
@@ -79,7 +78,7 @@ void set_mode(int onboard, Config *config) {
         *gradientConfig = *configPtr;
 
         onboardConfig[onboard] = gradientConfig;
-    }
+    } 
 
     selected = onboard;
 }

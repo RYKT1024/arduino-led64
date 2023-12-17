@@ -7,6 +7,7 @@
 #include <cstring>
 #include <config.h>
 #include <mode.h>
+#include <led.h>
 
 void setup_udp();
 void loop_udp();
