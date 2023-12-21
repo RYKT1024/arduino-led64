@@ -83,6 +83,10 @@ void set_mode(int onboard, const char *mode, Config *config) {
     selected = onboard;
 }
 
+int get_status() {
+    return selected;
+}
+
 int mode_switch(int select) {
     if(select == -1) 
         selected = (selected + 1) % 5;

@@ -26,6 +26,10 @@ void led_switch() {
   led_status = !led_status;
 }
 
+int get_led_status() {
+  return led_status ? 1 : 0;
+}
+
 CRGB rgb(int g, int r, int b) {
   return CRGB(r, g, b);
 }

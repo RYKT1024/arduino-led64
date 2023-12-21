@@ -86,6 +86,18 @@ void get_handler_onboard() {
   
 }
 
+void get_handler_status() {
+  Udp.beginPacket(remoteIP, 6688); 
+  Udp.print('{');
+  Udp.print("\"type\":\"config\", ");
+  Udp.print("\"data\":");
+  Udp.print('{');
+  Udp.printf("\"status\":[%d, %d]", get_led_status(), get_status());
+  Udp.print('}');
+  Udp.println('}');
+  Udp.endPacket(); 
+}
+
 void loop_udp() {
   /*接收发送过来的Udp数据*/
   int Data_length = Udp.parsePacket();  //获取接收的数据的长度
@@ -123,7 +135,8 @@ void loop_udp() {
           Config *config;
           set_mode(doc["config"]["onboard"], "set", config);
         }
-          
+        else if(!strcmp(mode, "status"))
+          get_handler_status();
       }
     }
   }

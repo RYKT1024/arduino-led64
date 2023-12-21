@@ -9,6 +9,7 @@ void setup_mode();
 void loop_mode();
 
 Config **get_onboard();
+int get_status();
 void set_mode(int onboard, const char *mode, Config *config);
 int mode_switch(int select);
 
