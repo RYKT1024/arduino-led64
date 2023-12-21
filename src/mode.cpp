@@ -6,7 +6,7 @@
 Config *onboardConfig[5];
 BreathConfig breathConfig;
 BreathConfig breathConfig_1;
-BreathConfig breathConfig_2;
+StaticSConfig staticSConfig;
 GradientConfig gradientConfig;
 GradientConfig gradientConfig_1;
 
@@ -31,13 +31,12 @@ void setup_mode() {
     breathConfig_1.color[2] = 120;
     onboardConfig[1] = &breathConfig_1;
 
-    breathConfig_2.mode = "breath";
-    breathConfig_2.brightness = 0.2;
-    breathConfig_2.speed = 0.2;
-    breathConfig_2.color[0] = 0;
-    breathConfig_2.color[1] = 240;
-    breathConfig_2.color[2] = 120;
-    onboardConfig[2] = &breathConfig_2;
+    staticSConfig.mode = "static_s";
+    staticSConfig.brightness = 0.05;
+    staticSConfig.color[0] = 240;
+    staticSConfig.color[1] = 120;
+    staticSConfig.color[2] = 0;
+    onboardConfig[2] = &staticSConfig;
 
     gradientConfig.mode = "gradient";
     gradientConfig.brightness = 0.6;
@@ -112,6 +111,12 @@ void loop_mode() {
     else if(!strcmp(mode, "gradient")) {
         GradientConfig *configPtr = static_cast<GradientConfig *>(config);
         loop_led_gradient(configPtr->color_from, configPtr->color_to, configPtr->speed, configPtr->brightness);
+        // configPtr->show_detail();
+        // Serial.println(configPtr->get_json());
+    }
+    else if(!strcmp(mode, "static_s")) {
+        StaticSConfig *configPtr = static_cast<StaticSConfig *>(config);
+        loop_led_static_s(configPtr->color, configPtr->brightness);
         // configPtr->show_detail();
         // Serial.println(configPtr->get_json());
     }

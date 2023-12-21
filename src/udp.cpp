@@ -66,6 +66,20 @@ void handler_gradient(StaticJsonDocument<2048> doc) {
   set_mode(onboard, "gradient", &config);
 }
 
+// json: {"mode":"static_s", "config":{"onboard":0, "brightness":0.4, "color":[0, 255, 120]}}
+void handler_static_s(StaticJsonDocument<2048> doc) {
+  StaticSConfig config;
+  config.mode = doc["mode"];
+  config.brightness = doc["config"]["brightness"];
+  config.color[0] = doc["config"]["color"][0];
+  config.color[1] = doc["config"]["color"][1];
+  config.color[2] = doc["config"]["color"][2];
+  // config.show_mode();
+
+  int onboard = doc["config"]["onboard"];
+  set_mode(onboard, "breath", &config);
+}
+
 void get_handler_onboard() {
   Config **config = get_onboard();
 
@@ -129,6 +143,8 @@ void loop_udp() {
           handler_breath(doc);
         else if(!strcmp(mode, "gradient")) 
           handler_gradient(doc);
+        else if(!strcmp(mode, "static_s")) 
+          handler_static_s(doc);
         else if(!strcmp(mode, "switch")) 
           led_switch();
         else if(!strcmp(mode, "set")) {

@@ -110,6 +110,15 @@ void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float 
   j += led_commit();
 }
 
+
+void loop_led_static_s(int color_arr[], float brightness) {
+  CRGB color = rgb(color_arr[0], color_arr[1], color_arr[2]);
+  color = update_brightness(color, brightness);
+  fill_solid(leds, NUM_LEDS, color);
+  led_commit();
+}
+
+
 /**
  * 提交颜色更改，显示颜色
  * 检查led_status状态为flase时不显示

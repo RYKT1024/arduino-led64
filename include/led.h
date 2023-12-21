@@ -19,5 +19,6 @@ void show_color(CRGB color);
 void setup_led();
 void loop_led_breath(int color_arr[], float speed, float brightness);
 void loop_led_gradient(int color_1_arr[], int color_2_arr[], float speed, float brightness);
+void loop_led_static_s(int color_arr[], float brightness);
 
 #endif
