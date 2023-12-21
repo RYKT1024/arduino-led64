@@ -31,7 +31,7 @@ void setup_mode() {
     breathConfig_1.color[2] = 120;
     onboardConfig[1] = &breathConfig_1;
 
-    staticSConfig.mode = "static_s";
+    staticSConfig.mode = "static";
     staticSConfig.brightness = 0.05;
     staticSConfig.color[0] = 240;
     staticSConfig.color[1] = 120;
@@ -73,12 +73,18 @@ void set_mode(int onboard, const char *mode, Config *config) {
     }
     else if(!strcmp(mode, "gradient")) {
         GradientConfig *configPtr = static_cast<GradientConfig *>(config);
-        GradientConfig *gradientConfig = new GradientConfig;
+        GradientConfig *gradientConfig = new GradientConfig();
         *gradientConfig = *configPtr;
 
         onboardConfig[onboard] = gradientConfig;
     } 
+    else if(!strcmp(mode, "static")) {
+        StaticSConfig *configPtr = static_cast<StaticSConfig *>(config);
+        StaticSConfig *staticSConfig = new StaticSConfig();
+        *staticSConfig = *configPtr;
 
+        onboardConfig[onboard] = staticSConfig;
+    } 
     selected = onboard;
 }
 
@@ -114,7 +120,7 @@ void loop_mode() {
         // configPtr->show_detail();
         // Serial.println(configPtr->get_json());
     }
-    else if(!strcmp(mode, "static_s")) {
+    else if(!strcmp(mode, "static")) {
         StaticSConfig *configPtr = static_cast<StaticSConfig *>(config);
         loop_led_static_s(configPtr->color, configPtr->brightness);
         // configPtr->show_detail();

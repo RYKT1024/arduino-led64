@@ -74,10 +74,10 @@ void handler_static_s(StaticJsonDocument<2048> doc) {
   config.color[0] = doc["config"]["color"][0];
   config.color[1] = doc["config"]["color"][1];
   config.color[2] = doc["config"]["color"][2];
-  // config.show_mode();
+  // config.show_detail();
 
   int onboard = doc["config"]["onboard"];
-  set_mode(onboard, "breath", &config);
+  set_mode(onboard, "static", &config);
 }
 
 void get_handler_onboard() {
@@ -91,6 +91,8 @@ void get_handler_onboard() {
   for(int i=0; i<5; i++) {
     Udp.printf("\"%d\":", i);
     Udp.print(config[i]->get_json());
+    config[i]->show_mode();
+    config[i]->show_detail();
     if(i<4)
       Udp.print(", ");
   } 
@@ -143,7 +145,7 @@ void loop_udp() {
           handler_breath(doc);
         else if(!strcmp(mode, "gradient")) 
           handler_gradient(doc);
-        else if(!strcmp(mode, "static_s")) 
+        else if(!strcmp(mode, "static")) 
           handler_static_s(doc);
         else if(!strcmp(mode, "switch")) 
           led_switch();

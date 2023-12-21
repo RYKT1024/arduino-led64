@@ -73,7 +73,7 @@ void StaticSConfig::show_mode() {
 }
 
 void StaticSConfig::show_detail() {
-    Serial.println("Breath Detail:");
+    Serial.println("StaticS Detail:");
     Serial.print("Brightness: ");
     Serial.println(brightness);
     Serial.print("Color: ");
